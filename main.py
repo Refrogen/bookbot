@@ -1,16 +1,29 @@
+from stats import get_num_words, get_unique_characters, sort_list
+import sys
+
 def get_book_text(filepath):
     with open(filepath) as f:
         return f.read()
-
+    
 def main():
-    story = get_book_text("frankenstein.txt")
-    num_words = get_num_words(story)
-    print(f"{num_words} words found in the document")
+    if sys.argv.__len__() < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
 
-def get_num_words(story):
-    if not story:
-        return 0
-    words = story.split()
-    return len(words)
+    book_path = sys.argv[1] 
+    book_txt = get_book_text(book_path)
+    num_words = get_num_words(book_txt)
+    unique_char = get_unique_characters(book_txt)
+    sorted_unique_char = sort_list(unique_char)
+
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {num_words} total words")
+    print("--------- Character Count -------")
+    for character in sorted_unique_char:
+        if character[0].isalpha():
+            print(f"{character[0]}: {character[1]}")
+    print("============= END ===============")
 
 main()
